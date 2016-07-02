@@ -17,9 +17,9 @@ export PATH=$PATH:$HOME/bin:$GOPATH/bin
 # export TRUSTED_IP=`nslookup $NAME | tail -n 2 | cut -c 10- | head -n 1`
 
 #conf file
-alias vb="vim /home/terakoshi.akihiro/.bashrc"
-alias vv="vim /home/terakoshi.akihiro/.vimrc"
-alias sb="source /home/terakoshi.akihiro/.bashrc"
+alias vb="vim ~/.bashrc"
+alias vv="vim ~/.vimrc"
+alias sb="source ~/.bashrc"
 alias tm="TERM=screen-256color-bce tmux"
 alias vi="vim"
 
