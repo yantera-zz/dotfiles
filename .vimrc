@@ -129,6 +129,9 @@ NeoBundle 'tpope/vim-endwise'
 "----文法チェック-----"
 NeoBundle 'ngmy/vim-rubocop'
 
+"----nginx.confを色付け-----"
+NeoBundle 'vim-scripts/nginx.vim'
+
 call neobundle#end()
 
 " Required:
@@ -163,11 +166,13 @@ vmap <Enter> <Plug>(EasyAlign)
 nmap <Leader>a <Plug>(EasyAlign)
 
 "-----表示画面の設定-----"
-"let g:htbrid_use_iTerm_colors = 1
-"let g:hybrid_use_Xresources = 1
+" let g:htbrid_use_iTerm_colors = 1
+" let g:hybrid_use_Xresources = 1
 set background=dark
 let g:seoul256_background = 236
+" let g:badwolf_darkgutter = 1
 colorscheme seoul256          "カラースキーマの変更
+" colorscheme hybrid          "カラースキーマの変更
 "set t_ut= to disable Background Color Erase
 syntax on
 set hlsearch                "検索結果をハイライト表示
@@ -189,6 +194,19 @@ set smartcase               " 小文字のみで検索したときに大文字�
 set wrapscan                " 最後尾まで検索を終えたら次の検索で先頭に移る
 set hidden                  " 保存されていないファイルがあるときでも別のファイルを開けるようにする "
 set infercase               " 補完の際の大文字小文字の区別しない
+
+"-----文字コードの判別-----"
+set encoding=utf-8
+set fileencodings=utf-8
+
+"-----スワップファイル無効-----"
+set noswapfile
+
+"-----コピペで階段状にしない-----"
+set pastetoggle=<C-E>
+
+"-----nginx.confにデフォルトで色を付ける
+set ft=nginx
 
 "-----矢印キー封印-----"
 map <Up> <Nop>
@@ -216,11 +234,6 @@ let g:quickrun_config = {}
 let g:quickrun_config['markdown'] = {
     \   'outputter': 'browser'
     \ }
-
-"-----文字コードの判別-----"
-set encoding=utf-8
-set fileencodings=utf-8
-
 " カレントウィンドウにのみ罫線を引く
 "augroup cch
 "    autocmd! cch
@@ -232,12 +245,6 @@ set fileencodings=utf-8
 ":hi CursorLine gui=underline
 "highlight CursorLine ctermbg=black guibg=black
 
-"-----スワップファイル無効-----"
-set noswapfile
-
-"-----コピペで階段状にしない-----"
-set pastetoggle=<C-E>
-
 "-----エイリアスの設定-----"
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -248,6 +255,8 @@ nnoremap <S-j> <C-w>+
 nnoremap <S-k> <C-w>-
 nnoremap <S-l> <C-w>>
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
+nnoremap sn gt
+nnoremap sp gT
 
 "-----カラースキーマの切り替え-----
 nnoremap <silent><F9>   :<C-u>call ColorRoller.roll()<CR>
@@ -268,7 +277,7 @@ function! ZenkakuSpace()
 endfunction
 
 "-----行末の空白削除-----"
-"autocmd BufWritePre * :%s/\s\+$//ge
+autocmd BufWritePre * :%s/\s\+$//ge
 
 "行末のスペースの可視化
 augroup HighlightTrailingSpaces
@@ -324,6 +333,7 @@ let ColorRoller.colors = [
       \ 'nightsky',
       \ 'herokudoc',
       \ 'baobaozhu',
+      \ 'badwolf',
       \ ]
 
 " Define dictionary.

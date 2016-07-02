@@ -6,15 +6,20 @@ if [ -f /etc/bashrc ]; then
 fi
 alias tmux="LD_LIBRARY_PATH=/usr/local/lib /usr/local/bin/tmux"
 
-export LANG=ja_JP.UTF-8
-#export LANG
+# langage conf (ja or en)
+# export LANG=ja_JP.UTF-8
+export LANG=en_US.UTF-8
+
 export GOPATH=$HOME/bin/go
 export PATH=$PATH:$HOME/bin:$GOPATH/bin
 
+# local NAME=`who |  cut -d '(' -f 2 | sed -e 's/)//g'`
+# export TRUSTED_IP=`nslookup $NAME | tail -n 2 | cut -c 10- | head -n 1`
+
 #conf file
-alias vb="vim .bashrc"
-alias vv="vim .vimrc"
-alias sb="source .bashrc"
+alias vb="vim /home/terakoshi.akihiro/.bashrc"
+alias vv="vim /home/terakoshi.akihiro/.vimrc"
+alias sb="source /home/terakoshi.akihiro/.bashrc"
 alias tm="TERM=screen-256color-bce tmux"
 alias vi="vim"
 
@@ -54,15 +59,31 @@ function check_shell_command {
     echo -e "${face}\e[m"
 }
 
+HISTSIZE=50000
+
 # settings for peco
 _replace_by_history() {
-    local l=$(HISTTIMEFORMAT= history | tac | sed -e 's/^\s*[0-9]*    \+\s\+//' | peco --query "$READLINE_LINE")
+    declare l=$(HISTTIMEFORMAT= history | sort -k1,1nr | perl -ne 'BEGIN { my @lines = (); } s/^\s*\d+\s*//; $in=$_; if (!(grep {$in eq $_} @lines)) { push(@lines, $in); print $in; }' | peco --query "$READLINE_LINE")
     READLINE_LINE="$l"
     READLINE_POINT=${#l}
 }
 bind -x '"\C-r": _replace_by_history'
 bind    '"\C-xr": reverse-search-history'
 
-function agv () {
-  vim $(ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
+function hwv () {
+  vim $(hw $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
 }
+
+#ssh-agent
+eval `ssh-agent`
+ssh-add
+
+function share_history {
+    history -a
+    history -c
+    history -r
+}
+PROMPT_COMMAND='share_history'
+shopt -u histappend
+
+source ~/.git-completion.bash
